@@ -1,0 +1,32 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Author  : Pedro Alves (pedro@palves.net)
+
+# Pass down the host's user/home/uid/etc. as environment variables, so
+# that the entrypoint script can recreate the user inside the image.
+#
+# The host's home dir is mounted inside the container.
+#
+# The container's entry point cd's to the host's current working
+# directly, passed down by LOCAL_CWD.
+#
+# I have network filesystems mounted under /net, and I typically have
+# sources or build dirs on network drives, so I'm mounting those as
+# well in the container.  If you don't have /net on your system,
+# you'll just end up with an empty /net dir in the container.
+#
+# Append "-cygwin" to the hostname inside the container, to make it
+# easy to tell when inside the container in shell prompts.
+
+docker run -ti --rm \
+       -e LOCAL_UID="$(id -u)" \
+       -e LOCAL_GID="$(id -g)" \
+       -e LOCAL_GROUP="$(id -gn)" \
+       -e USER \
+       -e HOME \
+       -e LOCAL_CWD="$(pwd)" \
+       -h "$HOSTNAME"-cygwin \
+       -v /etc/localtime:/etc/localtime:ro \
+       -v "$HOME":"$HOME":z \
+       -v /net/:/net/:z \
+       cygwin-cross "$@"
