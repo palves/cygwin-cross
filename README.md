@@ -85,7 +85,7 @@ cygwin-cross
  make -j8
 ```
 
-(You'll actually need to build gmp/mgfr/libexpat beforehand, in a
+(You'll actually need to build gmp/mpfr/libexpat beforehand, in a
 similar fashion.  But you get the point.)
 
 Alternatively, you can invoke any toolchain command (make, gcc, etc.)
