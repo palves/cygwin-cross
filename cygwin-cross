@@ -17,8 +17,13 @@
 #
 # Append "-cygwin" to the hostname inside the container, to make it
 # easy to tell when inside the container in shell prompts.
-
+#
+#  --network=host speeds up container startup time.  "time
+#  cygwin-cross /bin/true" goes down from around 0.7s to 0.3s at the
+#  time of writing.  It's also slightly faster than --network=none.
+#
 docker run -ti --rm \
+       --network=host \
        -e LOCAL_UID="$(id -u)" \
        -e LOCAL_GID="$(id -g)" \
        -e LOCAL_GROUP="$(id -gn)" \
