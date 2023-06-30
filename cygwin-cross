@@ -52,4 +52,4 @@ docker run --rm \
        -v "$HOME":"$HOME":z \
        -v /net/:/net/:z \
        -v /mnt/:/mnt/:z \
-       cygwin-cross "$@"
+       palves79/cygwin-cross "$@"

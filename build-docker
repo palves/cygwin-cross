@@ -2,4 +2,4 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author  : Pedro Alves (pedro@palves.net)
 
-docker build -t cygwin-cross .
+docker build -t palves79/cygwin-cross .
