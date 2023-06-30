@@ -7,7 +7,18 @@
 # This is meant to be run with the host's $HOME mounted inside the
 # container.
 
-FROM registry.fedoraproject.org/fedora:38
+# Use a multi-stage approach, squashing all the layers at the end.
+# This lets us write multiple RUN invocations below without caring
+# about the fact that that creates layers with stuff that is removed
+# later.  This helps with keeping readability, and helps with
+# development at the same time (compared to moving every step to a
+# single RUN invocation), as with this approach, adding an extra RUN
+# command to test installing some extra package or something of the
+# sort still lets docker reuse the previously cached layers.
+
+FROM registry.fedoraproject.org/fedora:38 AS fedora
+
+FROM fedora AS stage0
 LABEL maintainer "Pedro Alves <pedro@palves.net>"
 
 RUN dnf -y update
@@ -59,4 +70,8 @@ RUN dnf -y install wget && \
 RUN dnf -y autoremove && dnf clean all
 
 COPY entrypoint.sh /entrypoint.sh
+
+FROM fedora AS squashed
+COPY --from=stage0 / /
+
 ENTRYPOINT ["/entrypoint.sh"]
