@@ -22,6 +22,15 @@
 #  cygwin-cross /bin/true" goes down from around 0.7s to 0.3s at the
 #  time of writing.  It's also slightly faster than --network=none.
 #
+
+EXTRA_OPTS=()
+
+ENV_FILE="$HOME/.cygwin-cross-env"
+
+if [ -f "$ENV_FILE" ]; then
+    EXTRA_OPTS+=(--env-file "$ENV_FILE")
+fi
+
 docker run -ti --rm \
        --network=host \
        -e LOCAL_UID="$(id -u)" \
@@ -34,4 +43,5 @@ docker run -ti --rm \
        -v /etc/localtime:/etc/localtime:ro \
        -v "$HOME":"$HOME":z \
        -v /net/:/net/:z \
+       "${EXTRA_OPTS[@]}" \
        cygwin-cross "$@"
