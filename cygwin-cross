@@ -43,5 +43,6 @@ docker run -ti --rm \
        -v /etc/localtime:/etc/localtime:ro \
        -v "$HOME":"$HOME":z \
        -v /net/:/net/:z \
+       -v /mnt/:/mnt/:z \
        "${EXTRA_OPTS[@]}" \
        cygwin-cross "$@"
