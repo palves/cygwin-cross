@@ -40,6 +40,9 @@ RUN dnf -y install \
     cygwin64-libiconv \
     cygwin64-ncurses
 
+# Not strictly needed, but useful.
+RUN dnf -y install ccache
+
 # Basic GDB build dependency packages.
 RUN dnf -y install make flex bison texinfo
 
