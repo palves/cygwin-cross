@@ -57,6 +57,9 @@ RUN dnf -y install diffutils
 # to edit the files in the build dir, do it outside the container.
 RUN dnf -y install hstr less which procps
 
+# So we can easily upload binaries to the target Windows machine.
+RUN dnf -y install rsync openssh-clients
+
 # Neither su-exec or gosu are available in the Fedora distro.
 # Download it straight from github, and build it locally.
 
