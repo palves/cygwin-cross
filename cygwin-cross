@@ -25,13 +25,21 @@
 
 EXTRA_OPTS=()
 
+# Go interactive iff we have a terminal.  This avoids "The input
+# device is not a TTY" errors when running a non-interactive session
+# via ssh.  E.g., "ssh server cygwin-cross make -C project-dir".
+if [ -t 1 ]; then
+    EXTRA_OPTS+=(-ti)
+fi
+
 ENV_FILE="$HOME/.cygwin-cross-env"
 
 if [ -f "$ENV_FILE" ]; then
     EXTRA_OPTS+=(--env-file "$ENV_FILE")
 fi
 
-docker run -ti --rm \
+docker run --rm \
+       "${EXTRA_OPTS[@]}" \
        --network=host \
        -e LOCAL_UID="$(id -u)" \
        -e LOCAL_GID="$(id -g)" \
@@ -44,5 +52,4 @@ docker run -ti --rm \
        -v "$HOME":"$HOME":z \
        -v /net/:/net/:z \
        -v /mnt/:/mnt/:z \
-       "${EXTRA_OPTS[@]}" \
        cygwin-cross "$@"
