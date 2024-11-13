@@ -30,14 +30,6 @@ found at: https://copr.fedorainfracloud.org/coprs/yselkowitz/cygwin/
   non-interative shell inside the container.
 
 
-## Building the image
-
-```bash
-git clone https://github.com/cygwin-cross/cygwin-cross.git
-cd cygwin-cross
-./build-docker
-```
-
 ## Installation
 
 This image is not meant to be run directly.  Instead, there is a
@@ -46,7 +38,15 @@ environment and/or execute build commands on build directories that
 exist on the local host filesystem.
 
 To install the helper script, simply copy or symlink it to some
-directory found in your \$PATH.  E.g.:
+directory found in your \$PATH.  E.g., you can download it directly
+from github, like so:
+
+```bash
+wget https://raw.githubusercontent.com/palves/cygwin-cross/refs/heads/main/cygwin-cross
+chmod u+x cygwin-cross
+```
+
+Or if you have a local repo checkout:
 
 ```bash
 ln -s /path/to/cygwin-cross-git/cygwin-cross ~/bin/
@@ -110,3 +110,16 @@ that would result in a very significant slowdown caused by
 entering/leaving the container many times.  It is much faster to wrap
 the "make" invocation instead, and let make inside the container spawn
 the compiler as many times as needed.
+
+
+## Rebuilding the image
+
+This isn't normally needed, because the image is available on [docker
+hub](https://hub.docker.com/r/palves79/cygwin-cross), but if you want
+to, you can rebuild it with:
+
+```bash
+git clone https://github.com/cygwin-cross/cygwin-cross.git
+cd cygwin-cross
+./build-docker
+```
