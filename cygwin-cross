@@ -50,6 +50,7 @@ docker run --rm \
        -h "$HOSTNAME"-cygwin \
        -v /etc/localtime:/etc/localtime:ro \
        -v "$HOME":"$HOME":z \
+       -v /tmp/:/tmp/:z \
        -v /net/:/net/:z \
        -v /mnt/:/mnt/:z \
        palves79/cygwin-cross "$@"
