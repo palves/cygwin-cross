@@ -7,8 +7,8 @@ environment.  It is custom tailored for building Cygwin GDB, but it
 can also be a base for developing other projects.  (You may need to
 tweak the Dockerfile to install more packages in that case.)
 
-For the cross-toolchain itself, this uses yselkowitz's Fedora copr,
-found at: https://copr.fedorainfracloud.org/coprs/yselkowitz/cygwin/
+For the cross-toolchain itself, this uses [yselkowitz's Fedora
+copr](https://copr.fedorainfracloud.org/coprs/yselkowitz/cygwin/).
 
 ## Features
 
@@ -29,28 +29,26 @@ found at: https://copr.fedorainfracloud.org/coprs/yselkowitz/cygwin/
 - Can be run with arguments, which are passed as commands to the
   non-interative shell inside the container.
 
-
 ## Installation
 
 This image is not meant to be run directly.  Instead, there is a
-**cygwin-cross** helper script you use to enter the container
+`cygwin-cross` helper script you use to enter the container
 environment and/or execute build commands on build directories that
 exist on the local host filesystem.
 
 To install the helper script, simply copy or symlink it to some
-directory found in your \$PATH.  E.g., you can download it directly
+directory found in your `$PATH`.  E.g., you can download it directly
 from github, like so:
 
 ```bash
-wget https://raw.githubusercontent.com/palves/cygwin-cross/refs/heads/main/cygwin-cross
-chmod u+x cygwin-cross
+$ cd ~/bin
+$ wget https://raw.githubusercontent.com/palves/cygwin-cross/refs/heads/main/cygwin-cross
+$ chmod u+x cygwin-cross
 ```
 
-Or if you have a local repo checkout:
-
-```bash
-ln -s /path/to/cygwin-cross-git/cygwin-cross ~/bin/
-```
+When you run the `cygwin-cross` script for the first time, it
+downloads the docker image from `docker hub` automatically, you don't
+need to build it yourself.
 
 ## Examples
 
@@ -67,10 +65,10 @@ prefix/triplet, so e.g., the compiler is "x86_64-pc-cygwin-gcc".
 For example, here\'s how to compile GDB for Cygwin:
 
 ```bash
-cd /path/to/gdb/build/
-cygwin-cross
+$ cd /path/to/gdb/build/
+$ cygwin-cross
 # You're now inside the container.
-/path/to/gdb/src/configure \
+$ /path/to/gdb/src/configure \
     --disable-ld \
     --disable-binutils \
     --disable-gas \
@@ -82,16 +80,16 @@ cygwin-cross
     --with-libexpat-prefix=/path/to/expat/install-cygwin \
     --host=x86_64-pc-cygwin \
     --target=x86_64-pc-cygwin
- make -j8
+$ make -j8
 ```
 
 (You'll actually need to build gmp/mpfr/libexpat beforehand, in a
 similar fashion.  But you get the point.)
 
 Alternatively, you can invoke any toolchain command (make, gcc, etc.)
-inside the container by prepending the **cygwin-cross** script on the
-commandline.  Assuming **cygwin-cross** can be found in your PATH, you
-can run:
+inside the container by prepending the `cygwin-cross` script on the
+commandline.  Assuming `cygwin-cross` can be found in your `$PATH`,
+you can run:
 
 ```bash
 $ cygwin-cross [command] [args...]
@@ -104,13 +102,12 @@ $ cygwin-cross make -j8
 ```
 
 Note that if you prefer the prepending alternative above, it is not
-recommended to wrap every compilation invocation in **cygwin-cross**,
-like e.g., with ```CC="cygwin-cross x86_64-pc-cygwin-gcc" make```, as
-that would result in a very significant slowdown caused by
-entering/leaving the container many times.  It is much faster to wrap
-the "make" invocation instead, and let make inside the container spawn
-the compiler as many times as needed.
-
+recommended to wrap every compilation invocation in `cygwin-cross`,
+like e.g., with `CC="cygwin-cross x86_64-pc-cygwin-gcc" make`, as that
+would result in a very significant slowdown caused by entering/leaving
+the container many times.  It is much faster to wrap the "make"
+invocation instead, and let make inside the container spawn the
+compiler as many times as needed.
 
 ## Rebuilding the image
 
@@ -119,7 +116,7 @@ hub](https://hub.docker.com/r/palves79/cygwin-cross), but if you want
 to, you can rebuild it with:
 
 ```bash
-git clone https://github.com/cygwin-cross/cygwin-cross.git
-cd cygwin-cross
-./build-docker
+$ git clone https://github.com/cygwin-cross/cygwin-cross.git
+$ cd cygwin-cross
+$ ./build-docker
 ```
