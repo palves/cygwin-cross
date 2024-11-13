@@ -19,7 +19,7 @@
 FROM registry.fedoraproject.org/fedora:41 AS fedora
 
 FROM fedora AS stage0
-LABEL maintainer "Pedro Alves <pedro@palves.net>"
+LABEL maintainer="Pedro Alves <pedro@palves.net>"
 
 RUN dnf -y update
 
