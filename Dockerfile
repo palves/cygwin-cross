@@ -16,7 +16,7 @@
 # command to test installing some extra package or something of the
 # sort still lets docker reuse the previously cached layers.
 
-FROM registry.fedoraproject.org/fedora:38 AS fedora
+FROM registry.fedoraproject.org/fedora:41 AS fedora
 
 FROM fedora AS stage0
 LABEL maintainer "Pedro Alves <pedro@palves.net>"
